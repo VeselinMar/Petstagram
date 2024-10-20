@@ -10,6 +10,7 @@ from petstagram.photos.validators import validate_file_size
 
 class Photo(models.Model):
     photo = models.ImageField(
+        upload_to='images',
         validators=(validate_file_size,),
     )
     description = models.TextField(
@@ -28,6 +29,7 @@ class Photo(models.Model):
         blank=True,
     )
     date_of_publication = models.DateField(auto_now=True)
+
 
 
     def __str__(self):
