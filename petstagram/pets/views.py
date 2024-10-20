@@ -1,10 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 # Create your views here.
 
 
 from django.shortcuts import render
 
+from petstagram.pets.forms import PetForm
 from petstagram.pets.models import Pet
 
 
@@ -12,7 +13,17 @@ from petstagram.pets.models import Pet
 
 
 def add_pet(request):
-    return render(request, template_name='pets/pet-add-page.html')
+    form = PetForm(request.POST or None)
+
+    if form.is_valid():
+        form.save()
+        return redirect('profile-details', pk=1)
+
+    context = {
+        'form': form,
+    }
+
+    return render(request, template_name='pets/pet-add-page.html', context=context)
 
 
 def pet_details(request, username, pet_slug):
