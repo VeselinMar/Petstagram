@@ -62,7 +62,7 @@
                 <!-- Start Pet Photo -->
                 <div class="imgBx" id="place the id of the photo here">
                     <!-- Pet Photo -->
-                    <img src="/static/images/axolotl.jpeg" alt="post" class="cover">
+                    <img src="{% static '/images/axolotl.jpeg' %}" alt="post" class="cover">
                 </div>
                 <!-- End Pet Photo -->
 
@@ -76,11 +76,14 @@
                             <span class="heart">
 
                                     <!-- Link to Like Path -->
-                                    <a href="#">
+                                    <a href="{% url 'like' photo.id %}">
                                         <!-- if user has liked the photo -->
-                                        <!-- <i class="fa-solid fa-heart" style="color: #ed4040;"></i> -->
+                                        {% if photo.like_set.all %}
+                                            <i class="fa-solid fa-heart" style="color: #ed4040;"></i>
                                         <!-- else -->
-                                        <i class="fa-regular fa-heart"></i>
+                                        {% else %}
+                                            <i class="fa-regular fa-heart"></i>
+                                        {% endif %}
                                     </a>
                             </span>
                             <!-- End Like Button -->
@@ -88,7 +91,7 @@
                             <!-- Start Share  Button -->
 
                             <!-- Link to Share Path -->
-                            <a href="#">
+                            <a href="{% url 'share' photo.id %}">
                                 <i class="fa-solid fa-share"></i>
                             </a>
                         </div>
@@ -96,30 +99,27 @@
                     <!-- End Like and Share Buttons Section -->
 
                     <!-- Number of Likes for the Photo -->
-                    <p class="likes">203 likes</p>
+                    <p class="likes">{{ likes.count }} likes</p>
 
                     <!-- Start Tagged Pets Section-->
+                    {% for pet in photo.tagged_pets.all %}
                     <!-- Link to First Tagged Pet Details Page -->
-                    <a href="#">
-                        <p class="message">
-                            <b>Sasho</b>
-                        </p>
-                    </a>
-                    <!-- Link to Second Tagged Pet Details Page -->
-                    <a href="#">
-                        <p class="message">
-                            <b>Some other fish</b>
-                        </p>
-                    </a>
+                        <a href="{% url 'pet-details' "username" pet.slug %}">
+                            <p class="message">
+                                <b>{{ pet.name }}</b>
+                            </p>
+                        </a>
                     <!-- End Tagged Pets Section-->
+                    {% endfor %}
 
                     <!-- Photo description -->
                     <p class="pet-details">This is my pet</p>
 
                     <!-- Date of Publication or edit of the Photo -->
-                    <h5 class="postTime">19/09/2022</h5>
+                    <h5 class="postTime">{{ photo.date_of_publication }}</h5>
 
                     <!-- Start Comments Section -->
+                {% for comment in comments %}
                     <div class="comments">
                         <div class="top">
                             <div class="userDetails">
@@ -128,7 +128,7 @@
                                         <div class="profile_img">
                                             <div class="image">
                                                 <!-- User Profile Image -->
-                                                <img src="/static/images/person.png" alt="img8">
+                                                <img src="{% static '/images/person.png' %}" alt="img8">
                                             </div>
                                         </div>
                                     </div>
@@ -137,14 +137,15 @@
                                         <!-- User First and/or Last Name or username-->
                                         <a href="">Steven Ivanov</a>
                                         <!-- User Comment -->
-                                        - OMG where can i get one
+                                        {{ comment.comment_text }}
                                     </p>
                                 </div>
-                                <span>Sept. 20, 2022, 5:02 p.m.</span>
+                                <span>{{ comment.publication_date_time }}</span>
                             </div>
                         </div>
                     </div>
                     <!-- End Comments Section -->
+                {% endfor %}
                 </div>
 
                 <!-- Start Add Comments Section -->

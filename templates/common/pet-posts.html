@@ -1,3 +1,4 @@
+{% load static %}
 
 <!-- Start First Pet Photo Post -->
 <div class="card">
@@ -22,14 +23,16 @@
                 </a>
                 <br>
                 <!-- if the photo has location -->
-                <span>Bansko, Bulgaria</span>
+                {% if photo.location %}
+                    <span>{{ photo.location }}</span>
+                {% endif %}
             </h3>
         </div>
         <!--  -->
     </div>
     <!-- Post image -->
-    <div class="imgBx" id="place the id of the photo here">
-        <img src="/static/images/axolotl.jpeg" alt="post" class="cover">
+    <div class="imgBx" id="{{ photo.pk }}">
+        <img src="{{ photo.photo.url }}" alt="post" class="cover">
     </div>
     <!-- -->
 
@@ -37,31 +40,44 @@
         <!-- like and share buttons -->
         <div class="actionBtns">
             <div class="left">
+                    <!-- Start of like button -->
                     <span class="heart">
-                        <a href="#">
+                        <a href="{% url 'like' photo.pk %}">
+
                             <!-- if user has liked the photo -->
-                            <i class="fa-solid fa-heart" style="color: #ed4040;"></i>
+                            {% if photo.like_set.all %}
+                                <i class="fa-solid fa-heart" style="color: #ed4040;"></i>
+
                             <!-- else -->
-                            <i class="fa-regular fa-heart"></i>
+                            {% else %}
+                                <i class="fa-regular fa-heart"></i>
+                            {% endif %}
                         </a>
                     </span>
-                <a href="share">
+                    <!-- End of like button -->
+            
+                    <!-- Start of share button -->
+                <a href="{% url 'share' photo.pk %}">
                     <i class="fa-solid fa-share"></i>
                 </a>
+            
+                    <!-- End of share button -->
             </div>
         </div>
         <!-- -->
 
         <a href="#">
-            <p class="likes">203 likes</p>
+            <p class="likes">{{ photo.like_set.count }} likes</p>
         </a>
 
         <!-- tagged pets -->
-        <a href="pet profile">
-            <p class="message">
-                <b>Sasho</b>
-            </p>
-        </a>
+        {% for pet in photo.tagged_pets.all %}
+            <a href="{% url 'pet-details' "username" pet.slug %}">
+                <p class="message">
+                    <b>{{ pet.name }}</b>
+                </p>
+            </a>
+        {% endfor %}
         <a href="pet profile">
             <p class="message">
                 <b>Some other fish</b>
@@ -69,11 +85,11 @@
         </a>
         <!--  -->
 
-        <a href="post details">
+        <a href="{% url 'photo-details' photo.pk %}">
             <h4 class="details">See details</h4>
         </a>
 
-        <h5 class="postTime">19/09/2022</h5>
+        <h5 class="postTime">{{ photo.date_of_publication }}</h5>
 
         <!-- add comments section -->
         <div class="addComments">

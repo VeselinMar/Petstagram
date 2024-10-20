@@ -18,6 +18,12 @@ class Comment(models.Model):
         on_delete=models.CASCADE,
     )
 
+    class Meta:
+        ordering = ['-publication_date_time']
+
+    def __str__(self):
+        return str(self.to_photo.photo)
+
 
 class Like(models.Model):
     to_photo = models.ForeignKey(
