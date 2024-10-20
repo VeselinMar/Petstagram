@@ -55,12 +55,12 @@
                         </a>
                     </span>
                     <!-- End of like button -->
-            
+
                     <!-- Start of share button -->
                 <a href="{% url 'share' photo.pk %}">
                     <i class="fa-solid fa-share"></i>
                 </a>
-            
+
                     <!-- End of share button -->
             </div>
         </div>
@@ -78,16 +78,14 @@
                 </p>
             </a>
         {% endfor %}
-        <a href="pet profile">
-            <p class="message">
-                <b>Some other fish</b>
-            </p>
-        </a>
-        <!--  -->
 
+        {% if photo_page %}
+        <p class="pet-details">{{ photo.description }}</p>
+        {% else %}
         <a href="{% url 'photo-details' photo.pk %}">
             <h4 class="details">See details</h4>
         </a>
+        {% endif %}
 
         <h5 class="postTime">{{ photo.date_of_publication }}</h5>
 

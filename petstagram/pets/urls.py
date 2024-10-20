@@ -3,7 +3,7 @@ from django.urls import path, include
 from petstagram.pets import views
 
 urlpatterns = [
-    path('pets/', include([
+    path('', include([
         path('add/', views.add_pet, name='add-pet'),
         path('<str:username>/pet/<slug:pet_slug>/', include([
             path('', views.pet_details, name='pet-details'),

@@ -11,13 +11,13 @@ def login(request):
     return render(request, template_name='accounts/login-page.html')
 
 
-def show_profile_details(request):
+def show_profile_details(request, pk: int):
     return render(request, template_name='accounts/profile-details-page.html')
 
 
-def edit_profile(request):
+def edit_profile(request, pk: int):
     return render(request, template_name='accounts/profile-edit-page.html')
 
 
-def delete_profile(request):
+def delete_profile(request, pk: int):
     return render(request, template_name='accounts/profile-delete-page.html')
