@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DetailView, UpdateView
+from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
 
 from petstagram.common.forms import CommentForm
 from petstagram.pets.forms import PetForm, PetDeleteForm
@@ -95,6 +95,29 @@ class EditPetView(UpdateView):
 #         'form': form,
 #     }
 #     return render(request, template_name='pets/pet-edit-page.html', context=context)
+
+
+class DeletePetView(DeleteView):
+    model = Pet
+    template_name = 'pets/pet-delete-page.html'
+    context_object_name = 'pet'
+    success_url = reverse_lazy(
+        'profile-details',
+        kwargs={'pk': 1}
+    )
+
+    def get_object(self, queryset=None):
+        return Pet.objects.get(slug=self.kwargs['pet_slug'])
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = PetDeleteForm(initial=self.object.__dict__)
+        return context
+
+    def delete(self, request, *args, **kwargs):
+        pet = self.get_object()
+        pet.delete()
+        return redirect(self.success_url)
 
 
 def pet_delete(request, username, pet_slug):
