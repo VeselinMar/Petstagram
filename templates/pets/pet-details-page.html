@@ -40,12 +40,12 @@
         <div class="pet-posts">
 
             <!-- IF Photos End Pet Photos Post Section -->
-            {% if all_photos %}
+            {% for photo in all_photos %}
                 {% include 'common/pet-posts.html' %}
-            {% else %}
+            {% empty %}
                 <!-- IF NOT Photos Show No Post Image -->
                 <img class="no-posts" src="/static/images/no_posts.png" alt="no posts image">
-            {% endif %}
+            {% endfor %}
         </div>
     </div>
 {% endblock %}

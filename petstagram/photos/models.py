@@ -28,7 +28,9 @@ class Photo(models.Model):
         Pet,
         blank=True,
     )
-    date_of_publication = models.DateField(auto_now=True)
+    date_of_publication = models.DateField(
+        auto_now=True
+    )
 
 
 
