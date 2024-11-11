@@ -3,9 +3,9 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import CreateView
+from django.views.generic import CreateView, UpdateView
 
-from petstagram.accounts.forms import AppUserCreationForm, AppUserLoginForm
+from petstagram.accounts.forms import AppUserCreationForm, AppUserLoginForm, ProfileEditForm
 from petstagram.accounts.models import Profile
 
 # Create your views here.
@@ -38,8 +38,19 @@ def show_profile_details(request, pk: int):
     return render(request, template_name='accounts/profile-details-page.html')
 
 
-def edit_profile(request, pk: int):
-    return render(request, template_name='accounts/profile-edit-page.html')
+class ProfileEditView(UpdateView):
+    model = Profile
+    form_class = ProfileEditForm
+    template_name = 'accounts/profile-edit-page.html'
+
+    def get_object(self, queryset=None):
+        return self.request.user.profile
+
+    def get_success_url(self):
+        return reverse_lazy(
+            'profile-details',
+            kwargs={'pk': self.object.pk}
+        )
 
 
 def delete_profile(request, pk: int):

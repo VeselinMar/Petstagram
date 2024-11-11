@@ -2,15 +2,18 @@ from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
 
+from petstagram.accounts.forms import AppUserCreationForm
+
 # Register your models here.
 
 UserModel = get_user_model()
+
 
 @admin.register(UserModel)
 class AppUserAdmin(UserAdmin):
     model = UserModel
     add_form = AppUserCreationForm
-    form = AppUserChangeForm
+#    form = AppUserChangeForm
 
     list_display = ('pk', 'email', 'is_staff', 'is_superuser')
     search_fields = ('email',)
