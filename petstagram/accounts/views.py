@@ -3,9 +3,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.db.models import Count
 from django.http import HttpResponseRedirect, Http404
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, UpdateView, DetailView
+from django.views.generic import CreateView, UpdateView, DetailView, DeleteView
 
 from petstagram.accounts.forms import AppUserCreationForm, AppUserLoginForm, ProfileEditForm
 from petstagram.accounts.models import Profile
@@ -25,11 +25,6 @@ class AppUserRegisterView(CreateView):
 class AppUserLoginView(LoginView):
     form_class = AppUserLoginForm
     template_name = 'accounts/login-page.html'
-
-    def form_valid(self, form):
-        super().form_valid(form)
-        profile_instance = Profile.objects.get_or_create(user=self.request.user)
-        return HttpResponseRedirect(self.get_success_url())
 
 
 class AppUserLogoutView(LogoutView):
@@ -72,3 +67,17 @@ class ProfileEditView(UpdateView, LoginRequiredMixin):
 
 def delete_profile(request, pk: int):
     return render(request, template_name='accounts/profile-delete-page.html')
+
+
+class AppUserDeleteView(DeleteView):
+    model = UserModel
+    template_name = 'accounts/profile-delete-page.html'
+    success_url = reverse_lazy('home')
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+    def delete(self, request, *args, **kwargs):
+        user = self.get_object()
+        user.delete()
+        return redirect(self.get_success_url())
