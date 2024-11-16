@@ -1,4 +1,7 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse_lazy
+from django.views.generic import CreateView
 
 from petstagram.common.forms import CommentForm
 from petstagram.photos.forms import PhotoCreateForm, PhotoEditForm
@@ -8,18 +11,17 @@ from petstagram.photos.models import Photo
 # Create your views here.
 
 
-def add_photo(request):
-    form = PhotoCreateForm(request.POST or None, request.FILES or None)
+class PhotoAddPage(LoginRequiredMixin, CreateView):
+    model = Photo
+    template_name = 'photos/photo-add-page.html'
+    form_class = PhotoCreateForm
+    success_url = reverse_lazy('home')
 
-    if form.is_valid():
-        form.save()
-        return redirect('home')
+    def form_valid(self, form):
+        photo = form.save(commit=False)
+        photo.user = self.request.user
 
-    context = {
-        'form': form,
-    }
-
-    return render(request, template_name='photos/photo-add-page.html', context=context)
+        return super().form_valid(form)
 
 
 def photo_details(request, pk):

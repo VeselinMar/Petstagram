@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 
 # Create your views here.
@@ -15,11 +16,19 @@ from petstagram.pets.models import Pet
 # Create your views here.
 
 
-class AddPetView(CreateView):
+class AddPetView(LoginRequiredMixin, CreateView):
     model = Pet
     form_class = PetForm
     template_name = 'pets/pet-add-page.html'
-    success_url = reverse_lazy('profile-details', kwargs={'pk': 1})
+
+    def form_valid(self, form):
+        pet = form.save(commit=False)
+        pet.user = self.request.user
+        pet.save()
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('profile-details', kwargs={'pk': self.request.user.pk})
 
 
 # def add_pet(request):
@@ -38,13 +47,19 @@ class AddPetView(CreateView):
 class PetDetailsView(DetailView):
     model = Pet
     template_name = 'pets/pet-details-page.html'
-    context_object_name = 'pet'
     slug_url_kwarg = 'pet_slug'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['all_photos'] = self.object.photo_set.all()
-        context['comment_form'] = CommentForm
+        context['all_photos'] = context['pet'].photo_set.all()
+        context['comment_form'] = CommentForm()
+
+        all_photos = context['pet'].photo_set.all()
+
+        for photo in all_photos:
+            photo.has_liked = photo.like_set.filter(user=self.request.user).exists()
+
+        context['all_photos'] = all_photos
 
         return context
 
@@ -120,15 +135,15 @@ class DeletePetView(DeleteView):
         return redirect(self.success_url)
 
 
-def pet_delete(request, username, pet_slug):
-    pet = Pet.objects.get(slug=pet_slug)
-
-    if request.method == "POST":
-        pet.delete()
-        return redirect('profile-details', pk=1)
-
-    form = PetDeleteForm(initial=pet.__dict__)
-    context = {
-        'form': form,
-    }
-    return render(request, template_name='pets/pet-delete-page.html', context=context)
+# def pet_delete(request, username, pet_slug):
+#     pet = Pet.objects.get(slug=pet_slug)
+#
+#     if request.method == "POST":
+#         pet.delete()
+#         return redirect('profile-details', pk=1)
+#
+#     form = PetDeleteForm(initial=pet.__dict__)
+#     context = {
+#         'form': form,
+#     }
+#     return render(request, template_name='pets/pet-delete-page.html', context=context)

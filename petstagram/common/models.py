@@ -1,9 +1,12 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 
 from petstagram.photos.models import Photo
 
 
 # Create your models here.
+
+UserModel = get_user_model()
 
 
 class Comment(models.Model):
@@ -17,6 +20,10 @@ class Comment(models.Model):
         Photo,
         on_delete=models.CASCADE,
     )
+    user = models.ForeignKey(
+        to=UserModel,
+        on_delete=models.CASCADE,
+    )
 
     class Meta:
         ordering = ['-publication_date_time']
@@ -25,5 +32,9 @@ class Comment(models.Model):
 class Like(models.Model):
     to_photo = models.ForeignKey(
         Photo,
+        on_delete=models.CASCADE,
+    )
+    user = models.ForeignKey(
+        to=UserModel,
         on_delete=models.CASCADE,
     )
