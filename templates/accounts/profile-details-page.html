@@ -92,8 +92,8 @@
         <!-- Start Last Uploaded Photos Section -->
         <div class="pet-photos">
           <!-- Link to Last Uploaded Pet Photo -->
-        {% for photo in object.photo_set.all %}
-          <a href="{% url 'photo-details' photo.pk %}">
+        {% for photo in user_photos %}
+          <a href="{% url 'photo-details' photo.id %}">
             <!-- Pet Photo -->
             <img
               src="{{ photo.photo.url }}"

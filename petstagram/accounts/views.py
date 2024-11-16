@@ -9,6 +9,7 @@ from django.views.generic import CreateView, UpdateView, DetailView, DeleteView
 
 from petstagram.accounts.forms import AppUserCreationForm, AppUserLoginForm, ProfileEditForm
 from petstagram.accounts.models import Profile
+from petstagram.photos.models import Photo
 
 # Create your views here.
 
@@ -43,6 +44,11 @@ class AppUserDetailView(DetailView):
         context['total_likes_count'] = sum(p.likes_count for p in photos_with_likes)
         context['total_photos_count'] = self.object.photo_set.count()
         context['total_pets_count'] = self.object.pet_set.count()
+        context['user_photos'] = (
+            Photo.objects
+            .filter(user_id=self.object.pk)
+            .order_by('-date_of_publication')
+        )
 
         return context
 
