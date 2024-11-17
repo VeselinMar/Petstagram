@@ -56,7 +56,7 @@ Users can create, edit, and delete posts, and view details of other pets in the 
   ```
 
 ## Images
-![Registration](static/images/screenshots/Screenshot%20from%202024-11-17%2018-15-12.png)
-![Dashboard](static/images/screenshots/Screenshot%20from%202024-11-17%2018-15-45.png)
-![AddPet](static/images/screenshots/Screenshot%20from%202024-11-17%2018-15-59.png)
-![AddPhoto](static/images/screenshots/Screenshot%20from%202024-11-17%2018-16-11.png)
+![Registration](screenshots/Screenshot%20from%202024-11-17%2018-15-12.png)
+![Dashboard](screenshots/Screenshot%20from%202024-11-17%2018-15-45.png)
+![AddPet](screenshots/Screenshot%20from%202024-11-17%2018-15-59.png)
+![AddPhoto](screenshots/Screenshot%20from%202024-11-17%2018-16-11.png)
