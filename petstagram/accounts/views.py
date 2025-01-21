@@ -2,8 +2,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.db.models import Count
-from django.http import HttpResponseRedirect, Http404
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, DetailView, DeleteView
 
@@ -58,21 +57,17 @@ class ProfileEditView(UpdateView, LoginRequiredMixin):
     form_class = ProfileEditForm
     template_name = 'accounts/profile-edit-page.html'
 
-    def get_object(self, queryset=None):
-        profile = super().get_object(queryset)
-        if profile.user != self.request.user:
-            raise Http404("You do not have permission to edit this profile.")
-        return self.request.user.profile
+    def test_func(self):
+        profile = get_object_or_404(Profile, pk=self.kwargs['pk'])
+        return self.request.user == profile.user
 
     def get_success_url(self):
         return reverse_lazy(
             'profile-details',
-            kwargs={'pk': self.object.pk}
+            kwargs={
+                'pk': self.object.pk
+            }
         )
-
-
-def delete_profile(request, pk: int):
-    return render(request, template_name='accounts/profile-delete-page.html')
 
 
 class AppUserDeleteView(DeleteView):
