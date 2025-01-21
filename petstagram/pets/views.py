@@ -64,20 +64,6 @@ class PetDetailsView(DetailView):
         return context
 
 
-# def pet_details(request, username, pet_slug):
-#     pet = Pet.objects.get(slug=pet_slug)
-#     all_photos = pet.photo_set.all()
-#     comment_form = CommentForm()
-#
-#     context = {
-#         'pet': pet,
-#         'all_photos': all_photos,
-#         'comment_form': comment_form,
-#     }
-#
-#     return render(request, template_name='pets/pet-details-page.html', context=context)
-
-
 class EditPetView(UpdateView):
     model = Pet
     form_class = PetForm
