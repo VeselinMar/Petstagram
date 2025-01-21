@@ -55,7 +55,7 @@ class Profile(models.Model):
         null=True,
     )
 
-    profile_picture = models.ImageField(
+    profile_picture = models.URLField(
         blank=True,
         null=True,
     )
