@@ -1,7 +1,8 @@
 # Petstagram
 
-Petstagram is a Django web application reminding a lot of FurryBuddies but better in every way. 
-Users can create, edit, and delete posts, and view details of other pets in the community.
+Petstagram is one more practice Django web application reminding a lot of FurryBuddies but better. 
+Users can create, edit, and delete posts, and view details of other pets in the community. On top of that there is
+integrated Like, Comment and share functionality.
 
 # Installation
 
@@ -60,3 +61,4 @@ Users can create, edit, and delete posts, and view details of other pets in the 
 ![Dashboard](screenshots/Screenshot%20from%202024-11-17%2018-15-45.png)
 ![AddPet](screenshots/Screenshot%20from%202024-11-17%2018-15-59.png)
 ![AddPhoto](screenshots/Screenshot%20from%202024-11-17%2018-16-11.png)
+![ProfileView](screenshots/Screenshot%20profile.png)
