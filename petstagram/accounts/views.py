@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
@@ -25,6 +26,10 @@ class AppUserRegisterView(CreateView):
 class AppUserLoginView(LoginView):
     form_class = AppUserLoginForm
     template_name = 'accounts/login-page.html'
+
+    def form_invalid(self, form):
+        messages.error(self.request, 'Invalid username or password. Please try again.')
+        return super().form_invalid(form)
 
 
 class AppUserLogoutView(LogoutView):

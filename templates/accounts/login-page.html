@@ -14,12 +14,21 @@
                 {{ form.username|placeholder:"Email" }}
                 {{ form.password|placeholder:"Password" }}
 
+                <!-- Error messages -->
+                {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}
+                            <li class="{{ message.tags }}">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
                 <!-- Login Button-->
                 <button type="submit">Log in</button>
             </form>
             <!-- End Login Form -->
 
         </div>
+    
         <div class="second-option">
 
             <!-- Link to Register Page-->
